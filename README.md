@@ -2,6 +2,8 @@
 
 End-to-end Credit Risk ML system built to simulate real-world fintech engineering workflows — from SQL-based feature engineering to model deployment using Django & FastAPI.
 
+🌐 **Live Demo:** [credit-risk-ai.onrender.com](https://credit-risk-ai.onrender.com)
+
 ![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python&logoColor=white)
 ![Django](https://img.shields.io/badge/Django-5.1-green?logo=django&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.109-teal?logo=fastapi&logoColor=white)
