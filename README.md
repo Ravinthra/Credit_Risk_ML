@@ -7,6 +7,7 @@ End-to-end Credit Risk ML system built to simulate real-world fintech engineerin
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.109-teal?logo=fastapi&logoColor=white)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-1.3-orange?logo=scikit-learn&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Compose-blue?logo=docker&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-yellow?logo=opensourceinitiative&logoColor=white)
 
 ---
 
@@ -246,3 +247,9 @@ Skilled in:
 - Machine Learning & Financial Risk Modeling
 - Docker & Cloud Deployment
 - Data Engineering & Feature Engineering
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
