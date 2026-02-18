@@ -1,0 +1,24 @@
+==================================================
+Classification Report: Sklearn_GBM
+==================================================
+
+              precision    recall  f1-score   support
+
+ Non-Default       0.80      0.90      0.85      1372
+     Default       0.71      0.51      0.59       628
+
+    accuracy                           0.78      2000
+   macro avg       0.75      0.71      0.72      2000
+weighted avg       0.77      0.78      0.77      2000
+
+Confusion Matrix:
+              Predicted
+              Non-Def  Default
+Actual Non-Def   1240      132
+Actual Default    310      318
+
+Interpretation:
+  True Negatives:   1240 (correctly identified non-default)
+  False Positives:   132 (false alarm -> rejected good customer)
+  False Negatives:   310 (MISSED DEFAULT -> financial loss!)
+  True Positives:    318 (correctly caught default)

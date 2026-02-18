@@ -1,0 +1,24 @@
+==================================================
+Classification Report: Logistic_Regression
+==================================================
+
+              precision    recall  f1-score   support
+
+ Non-Default       0.86      0.78      0.82      1372
+     Default       0.60      0.72      0.66       628
+
+    accuracy                           0.76      2000
+   macro avg       0.73      0.75      0.74      2000
+weighted avg       0.78      0.76      0.77      2000
+
+Confusion Matrix:
+              Predicted
+              Non-Def  Default
+Actual Non-Def   1076      296
+Actual Default    176      452
+
+Interpretation:
+  True Negatives:   1076 (correctly identified non-default)
+  False Positives:   296 (false alarm -> rejected good customer)
+  False Negatives:   176 (MISSED DEFAULT -> financial loss!)
+  True Positives:    452 (correctly caught default)

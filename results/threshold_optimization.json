@@ -1,0 +1,27 @@
+{
+  "default_threshold": {
+    "threshold": 0.5,
+    "total_cost": "21120000",
+    "precision": 0.6121045392022009,
+    "recall": 0.7085987261146497,
+    "f1": 0.6568265682656826,
+    "fn_count": 183,
+    "fp_count": 282
+  },
+  "optimal_threshold": {
+    "threshold": 0.11000000000000001,
+    "total_cost": "12000000",
+    "precision": 0.3580104106419896,
+    "recall": 0.9856687898089171,
+    "f1": 0.5252439541790411,
+    "fn_count": 9,
+    "fp_count": 1110
+  },
+  "savings": "9120000",
+  "savings_pct": 43.18181818181818,
+  "cost_matrix": {
+    "fn_cost": 100000,
+    "fp_cost": 10000,
+    "asymmetry_ratio": 10.0
+  }
+}

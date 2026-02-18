@@ -1,0 +1,321 @@
+{
+  "timestamp": "2026-02-18T12:10:53.606517",
+  "comparison": [
+    {
+      "Model": "Logistic_Regression",
+      "accuracy": 0.764,
+      "precision": 0.6043,
+      "recall": 0.7197,
+      "f1_score": 0.657,
+      "auc_roc": 0.8294,
+      "auc_pr": 0.7065,
+      "ks_statistic": 0.5165,
+      "gini": 0.6588,
+      "cv_auc": 0.8494,
+      "train_time_seconds": 75.9
+    },
+    {
+      "Model": "XGBoost",
+      "accuracy": 0.787,
+      "precision": 0.6672,
+      "recall": 0.6417,
+      "f1_score": 0.6542,
+      "auc_roc": 0.8293,
+      "auc_pr": 0.7035,
+      "ks_statistic": 0.5149,
+      "gini": 0.6586,
+      "cv_auc": 0.8465,
+      "train_time_seconds": 106.9
+    },
+    {
+      "Model": "LightGBM",
+      "accuracy": 0.7675,
+      "precision": 0.6121,
+      "recall": 0.7086,
+      "f1_score": 0.6568,
+      "auc_roc": 0.8275,
+      "auc_pr": 0.6996,
+      "ks_statistic": 0.5101,
+      "gini": 0.6551,
+      "cv_auc": 0.8454,
+      "train_time_seconds": 113.4
+    },
+    {
+      "Model": "Sklearn_GBM",
+      "accuracy": 0.779,
+      "precision": 0.7067,
+      "recall": 0.5064,
+      "f1_score": 0.59,
+      "auc_roc": 0.8253,
+      "auc_pr": 0.697,
+      "ks_statistic": 0.5064,
+      "gini": 0.6506,
+      "cv_auc": 0.8462,
+      "train_time_seconds": 118.6
+    }
+  ],
+  "best_model": "Logistic_Regression",
+  "best_auc_roc": 0.8294,
+  "model_details": {
+    "Logistic_Regression": {
+      "best_params": {
+        "penalty": "l1",
+        "C": 0.1
+      },
+      "metrics": {
+        "accuracy": 0.764,
+        "precision": 0.6043,
+        "recall": 0.7197,
+        "f1_score": 0.657,
+        "auc_roc": 0.8294,
+        "auc_pr": 0.7065,
+        "ks_statistic": 0.5165,
+        "gini": 0.6588,
+        "cv_auc": 0.8494,
+        "train_time_seconds": 75.9
+      },
+      "top_10_features": [
+        {
+          "feature": "dti_ratio",
+          "importance_normalized": 0.6206939546425624
+        },
+        {
+          "feature": "employment_type_Unemployed",
+          "importance_normalized": 0.0952247345596177
+        },
+        {
+          "feature": "credit_score",
+          "importance_normalized": 0.0752714539673477
+        },
+        {
+          "feature": "employment_type_Self-Employed",
+          "importance_normalized": 0.022515922124514375
+        },
+        {
+          "feature": "age_group",
+          "importance_normalized": 0.021275494997814098
+        },
+        {
+          "feature": "log_annual_income",
+          "importance_normalized": 0.01900512028343544
+        },
+        {
+          "feature": "loan_type_Personal",
+          "importance_normalized": 0.017325457561789527
+        },
+        {
+          "feature": "employment_type_Freelance",
+          "importance_normalized": 0.017062958131129024
+        },
+        {
+          "feature": "credit_score_tier",
+          "importance_normalized": 0.016043482747545666
+        },
+        {
+          "feature": "employment_type_Salaried",
+          "importance_normalized": 0.014849767029022283
+        }
+      ]
+    },
+    "XGBoost": {
+      "best_params": {
+        "subsample": 0.7,
+        "scale_pos_weight": 1.5,
+        "reg_lambda": 1,
+        "reg_alpha": 0.01,
+        "n_estimators": 500,
+        "min_child_weight": 3,
+        "max_depth": 3,
+        "learning_rate": 0.01,
+        "gamma": 0.1,
+        "colsample_bytree": 0.8
+      },
+      "metrics": {
+        "accuracy": 0.787,
+        "precision": 0.6672,
+        "recall": 0.6417,
+        "f1_score": 0.6542,
+        "auc_roc": 0.8293,
+        "auc_pr": 0.7035,
+        "ks_statistic": 0.5149,
+        "gini": 0.6586,
+        "cv_auc": 0.8465,
+        "train_time_seconds": 106.9
+      },
+      "top_10_features": [
+        {
+          "feature": "loan_type_Business",
+          "importance_normalized": 0.20579633116722107
+        },
+        {
+          "feature": "term_bucket",
+          "importance_normalized": 0.10080226510763168
+        },
+        {
+          "feature": "dti_ratio",
+          "importance_normalized": 0.09181064367294312
+        },
+        {
+          "feature": "emi_to_income_ratio",
+          "importance_normalized": 0.08232330530881882
+        },
+        {
+          "feature": "credit_score_tier",
+          "importance_normalized": 0.04397066682577133
+        },
+        {
+          "feature": "credit_score",
+          "importance_normalized": 0.03753247484564781
+        },
+        {
+          "feature": "employment_type_Unemployed",
+          "importance_normalized": 0.021717442199587822
+        },
+        {
+          "feature": "emi_amount",
+          "importance_normalized": 0.02045554853975773
+        },
+        {
+          "feature": "annual_income",
+          "importance_normalized": 0.019916966557502747
+        },
+        {
+          "feature": "income_per_dependent",
+          "importance_normalized": 0.017109215259552002
+        }
+      ]
+    },
+    "LightGBM": {
+      "best_params": {
+        "subsample": 0.7,
+        "reg_lambda": 1.0,
+        "reg_alpha": 0.01,
+        "num_leaves": 31,
+        "n_estimators": 500,
+        "min_child_samples": 5,
+        "max_depth": 3,
+        "learning_rate": 0.01,
+        "colsample_bytree": 0.8
+      },
+      "metrics": {
+        "accuracy": 0.7675,
+        "precision": 0.6121,
+        "recall": 0.7086,
+        "f1_score": 0.6568,
+        "auc_roc": 0.8275,
+        "auc_pr": 0.6996,
+        "ks_statistic": 0.5101,
+        "gini": 0.6551,
+        "cv_auc": 0.8454,
+        "train_time_seconds": 113.4
+      },
+      "top_10_features": [
+        {
+          "feature": "credit_score",
+          "importance_normalized": 0.22451317296678122
+        },
+        {
+          "feature": "dti_ratio",
+          "importance_normalized": 0.16065292096219932
+        },
+        {
+          "feature": "emi_to_income_ratio",
+          "importance_normalized": 0.11798396334478808
+        },
+        {
+          "feature": "employment_stability_ratio",
+          "importance_normalized": 0.04982817869415808
+        },
+        {
+          "feature": "annual_income",
+          "importance_normalized": 0.04495990836197022
+        },
+        {
+          "feature": "age",
+          "importance_normalized": 0.038946162657502864
+        },
+        {
+          "feature": "interest_rate",
+          "importance_normalized": 0.038946162657502864
+        },
+        {
+          "feature": "employment_type_Unemployed",
+          "importance_normalized": 0.03665521191294387
+        },
+        {
+          "feature": "income_per_dependent",
+          "importance_normalized": 0.031214203894616266
+        },
+        {
+          "feature": "loan_to_income_ratio",
+          "importance_normalized": 0.03006872852233677
+        }
+      ]
+    },
+    "Sklearn_GBM": {
+      "best_params": {
+        "subsample": 0.8,
+        "n_estimators": 500,
+        "min_samples_split": 20,
+        "min_samples_leaf": 20,
+        "max_features": "sqrt",
+        "max_depth": 3,
+        "learning_rate": 0.01
+      },
+      "metrics": {
+        "accuracy": 0.779,
+        "precision": 0.7067,
+        "recall": 0.5064,
+        "f1_score": 0.59,
+        "auc_roc": 0.8253,
+        "auc_pr": 0.697,
+        "ks_statistic": 0.5064,
+        "gini": 0.6506,
+        "cv_auc": 0.8462,
+        "train_time_seconds": 118.6
+      },
+      "top_10_features": [
+        {
+          "feature": "emi_to_income_ratio",
+          "importance_normalized": 0.24807733071058688
+        },
+        {
+          "feature": "dti_ratio",
+          "importance_normalized": 0.24732046460880838
+        },
+        {
+          "feature": "credit_score",
+          "importance_normalized": 0.08390735024068476
+        },
+        {
+          "feature": "credit_score_tier",
+          "importance_normalized": 0.055791356994944384
+        },
+        {
+          "feature": "loan_to_income_ratio",
+          "importance_normalized": 0.05029993793847226
+        },
+        {
+          "feature": "loan_type_Business",
+          "importance_normalized": 0.044773425970255146
+        },
+        {
+          "feature": "emi_amount",
+          "importance_normalized": 0.044534113621601513
+        },
+        {
+          "feature": "log_annual_income",
+          "importance_normalized": 0.032454635029502285
+        },
+        {
+          "feature": "annual_income",
+          "importance_normalized": 0.026985228178991166
+        },
+        {
+          "feature": "income_per_dependent",
+          "importance_normalized": 0.02100990187390983
+        }
+      ]
+    }
+  }
+}

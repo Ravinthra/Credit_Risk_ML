@@ -1,0 +1,199 @@
+{% extends 'predictor/base.html' %}
+
+{% block content %}
+<div class="page-header centered animate-in">
+    <h1><i class="fa-solid fa-bolt text-accent"></i> Credit Risk Assessment</h1>
+    <p class="subtitle">Enter applicant details to get an instant AI-powered risk prediction with explainability.</p>
+</div>
+
+<div class="grid-2">
+
+    <!-- ═══ Application Form ═══ -->
+    <div class="card animate-in" style="animation-delay: 0.1s;">
+        <div class="card-header">
+            <div class="card-title">
+                <i class="fa-solid fa-file-signature"></i> Loan Application
+            </div>
+        </div>
+
+        <form method="POST" action="{% url 'predictor:predict' %}" id="predict-form">
+            {% csrf_token %}
+
+            <!-- Personal Information -->
+            <div class="section-label">
+                <i class="fa-solid fa-user"></i> Personal Information
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Age</label>
+                    {{ form.age }}
+                    <div class="form-help">18 – 70 years</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Gender</label>
+                    {{ form.gender }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Education</label>
+                    {{ form.education }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Marital Status</label>
+                    {{ form.marital_status }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Dependents</label>
+                    {{ form.dependents }}
+                </div>
+            </div>
+
+            <!-- Employment & Income -->
+            <div class="section-label">
+                <i class="fa-solid fa-briefcase"></i> Employment & Income
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Employment Type</label>
+                    {{ form.employment_type }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Years Employed</label>
+                    {{ form.employment_years }}
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                    <label class="form-label">Annual Income (₹)</label>
+                    {{ form.annual_income }}
+                    <div class="form-help">₹50,000 – ₹5,00,00,000</div>
+                </div>
+            </div>
+
+            <!-- Credit Profile -->
+            <div class="section-label">
+                <i class="fa-solid fa-credit-card"></i> Credit Profile
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">CIBIL Score</label>
+                    {{ form.credit_score }}
+                    <div class="form-help">300 – 900</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Credit Utilization</label>
+                    {{ form.credit_utilization }}
+                    <div class="form-help">0% – 100%</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Existing Loans</label>
+                    {{ form.existing_loans }}
+                </div>
+            </div>
+
+            <!-- Loan Request -->
+            <div class="section-label">
+                <i class="fa-solid fa-hand-holding-dollar"></i> Loan Request
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Loan Type</label>
+                    {{ form.loan_type }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount (₹)</label>
+                    {{ form.loan_amount }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Term (Months)</label>
+                    {{ form.loan_term_months }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Interest Rate (%)</label>
+                    {{ form.interest_rate }}
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block mt-4" id="submit-btn">
+                <span class="btn-icon"><i class="fa-solid fa-bolt"></i></span>
+                Analyze Risk
+            </button>
+        </form>
+    </div>
+
+    <!-- ═══ Results Panel ═══ -->
+    <div class="card result-card animate-in"
+        style="animation-delay: 0.15s; position: sticky; top: 80px; height: fit-content;">
+        <div class="card-header" style="text-align: center;">
+            <div class="card-title" style="justify-content: center;">
+                <i class="fa-solid fa-bullseye"></i> Prediction Result
+            </div>
+        </div>
+
+        {% if result %}
+        <!-- Gauge -->
+        <div class="gauge-wrapper" data-probability="{{ result.probability_raw }}">
+            <div class="gauge-bg"></div>
+            <div class="gauge-fill" id="gauge-fill" data-color="{{ result.color }}"
+                data-value="{{ result.probability_raw }}"></div>
+            <div class="gauge-cover"></div>
+            <div class="gauge-text">
+                <span class="gauge-percentage" data-color="{{ result.color }}"
+                    data-target="{{ result.probability }}">0</span><span class="gauge-percent-sign"
+                    data-color="{{ result.color }}">%</span>
+                <br>
+                <span class="gauge-label">Default Probability</span>
+            </div>
+        </div>
+
+        <!-- Risk Badge -->
+        <div class="mt-4">
+            <span class="risk-badge" data-color="{{ result.color }}">
+                {{ result.category }}
+            </span>
+            <p class="mt-2 text-sm text-muted">{{ result.description }}</p>
+        </div>
+
+        <!-- Action + EMI -->
+        <div class="risk-actions">
+            <div class="action-box p-3 rounded" data-color="{{ result.color }}">
+                <div class="text-sm text-muted mb-1">Recommended Action</div>
+                <strong>{{ result.action }}</strong>
+            </div>
+
+            <div class="emi-display">
+                <div class="text-sm text-muted mb-1">Estimated Monthly EMI</div>
+                <div class="emi-amount">₹ {{ result.emi }}</div>
+            </div>
+        </div>
+
+        <!-- SHAP Explanations -->
+        {% if explanations %}
+        <div class="shap-section">
+            <h4><i class="fa-solid fa-lightbulb text-warning"></i> Why this prediction?</h4>
+            {% for shap in explanations %}
+            <div class="shap-bar" title="{{ shap.feature_raw }}: {{ shap.value }}">
+                <div class="shap-label">{{ shap.feature }}</div>
+                <div class="shap-val-container">
+                    <div class="shap-bar-fill {% if shap.direction == 'increases_risk' %}bar-red{% else %}bar-green{% endif %}"
+                        data-width="{{ shap.impact_pct }}"></div>
+                </div>
+            </div>
+            {% endfor %}
+            <p class="text-sm text-muted mt-3">
+                <i class="fa-solid fa-info-circle"></i>
+                <span style="color: var(--danger-light);">Red</span> = increases risk &nbsp;·&nbsp;
+                <span style="color: var(--success-light);">Green</span> = decreases risk
+            </p>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <!-- Empty State -->
+        <div class="empty-state">
+            <i class="fa-solid fa-chart-pie"></i>
+            <p>Fill out the form and click <strong>Analyze Risk</strong></p>
+            <p class="hint">Results will appear here with AI explanations</p>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

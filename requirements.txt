@@ -1,0 +1,17 @@
+# ─── Django Web Application ─────────────────
+django>=5.1.0
+gunicorn>=21.2.0
+whitenoise>=6.5.0
+
+# ─── ML & Data Science ──────────────────────
+numpy>=1.26.0
+pandas>=2.1.0
+scikit-learn>=1.3.0
+joblib>=1.3.0
+
+# ─── Model Libraries ────────────────────────
+lightgbm>=4.0.0
+xgboost>=2.0.0
+
+# ─── Explainability ─────────────────────────
+shap>=0.43.0

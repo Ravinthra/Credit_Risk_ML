@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+*.egg
+dist/
+build/
+
+# Virtual Environments
+venv/
+.venv/
+env/
+
+# Data (too large for container)
+data/raw/
+data/*.csv
+data/*.db
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Tests & Coverage
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Docs
+*.md
+!README.md
+
+# Env
+.env
+.env.local

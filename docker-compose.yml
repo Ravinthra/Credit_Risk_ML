@@ -1,0 +1,78 @@
+# ============================================================
+# Credit Risk ML — Docker Compose
+# ============================================================
+# One-command deployment of the full stack:
+#   docker-compose up --build
+#
+# Services:
+#   - django:   Web UI + admin (port 8000)
+#   - ml_api:   FastAPI inference service (port 8001)
+#   - postgres: PostgreSQL 16 database (port 5432)
+# ============================================================
+
+services:
+
+  # ── PostgreSQL ──────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: creditrisk_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-creditrisk}
+      POSTGRES_USER: ${POSTGRES_USER:-creditrisk_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-creditrisk_pass}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-creditrisk_user}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── Django Web Application ──────────────────────────────
+  django:
+    build:
+      context: .
+      dockerfile: webapp/Dockerfile
+    container_name: creditrisk_django
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-change-me-in-production}
+      - DJANGO_DEBUG=${DJANGO_DEBUG:-False}
+      - DATABASE_URL=postgres://${POSTGRES_USER:-creditrisk_user}:${POSTGRES_PASSWORD:-creditrisk_pass}@postgres:5432/${POSTGRES_DB:-creditrisk}
+      - ML_SERVICE_URL=http://ml_api:8001
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./models:/app/models:ro
+      - ./results:/app/results:ro
+
+  # ── FastAPI ML Service ──────────────────────────────────
+  ml_api:
+    build:
+      context: .
+      dockerfile: ml_service/Dockerfile
+    container_name: creditrisk_ml_api
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      - MODEL_REGISTRY_DIR=/app/models/registry
+      - PYTHONPATH=/app
+    volumes:
+      - ./models:/app/models:ro
+      - ./results:/app/results:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  postgres_data:

@@ -1,0 +1,24 @@
+==================================================
+Classification Report: XGBoost
+==================================================
+
+              precision    recall  f1-score   support
+
+ Non-Default       0.84      0.85      0.85      1372
+     Default       0.67      0.64      0.65       628
+
+    accuracy                           0.79      2000
+   macro avg       0.75      0.75      0.75      2000
+weighted avg       0.78      0.79      0.79      2000
+
+Confusion Matrix:
+              Predicted
+              Non-Def  Default
+Actual Non-Def   1171      201
+Actual Default    225      403
+
+Interpretation:
+  True Negatives:   1171 (correctly identified non-default)
+  False Positives:   201 (false alarm -> rejected good customer)
+  False Negatives:   225 (MISSED DEFAULT -> financial loss!)
+  True Positives:    403 (correctly caught default)

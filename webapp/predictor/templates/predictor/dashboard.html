@@ -1,0 +1,135 @@
+{% extends 'predictor/base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="dash-header animate-in">
+    <div>
+        <h1 class="dash-title">Dashboard</h1>
+        <p class="dash-subtitle">Model performance overview · 4 models · 66 features · 8,000 training samples</p>
+    </div>
+</div>
+
+<!-- KPIs -->
+<div class="dash-kpis animate-in">
+    <div class="kpi">
+        <div class="kpi-label">Champion</div>
+        <div class="kpi-value kpi-champion">{{ best_model }}</div>
+    </div>
+    <div class="kpi-divider"></div>
+    <div class="kpi">
+        <div class="kpi-label">Best AUC-ROC</div>
+        <div class="kpi-value kpi-auc">{{ best_auc|floatformat:4 }}</div>
+    </div>
+    <div class="kpi-divider"></div>
+    <div class="kpi">
+        <div class="kpi-label">Features Used</div>
+        <div class="kpi-value">66</div>
+    </div>
+    <div class="kpi-divider"></div>
+    <div class="kpi">
+        <div class="kpi-label">Default Rate</div>
+        <div class="kpi-value">31.4%</div>
+    </div>
+</div>
+
+<!-- Model Comparison Table -->
+<div class="card dash-table-card animate-in">
+    <div class="dash-section-header">
+        <h2 class="dash-section-title">Model Comparison</h2>
+        <span class="dash-section-badge">{{ comparison|length }} models</span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table dash-table">
+            <thead>
+                <tr>
+                    <th class="th-model">Model</th>
+                    <th>AUC-ROC</th>
+                    <th>CV AUC</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1</th>
+                    <th>KS</th>
+                    <th>Gini</th>
+                    <th class="th-right">Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in comparison %}
+                <tr class="{% if row.Model == best_model %}dash-best-row{% endif %}">
+                    <td class="td-model">
+                        {% if row.Model == best_model %}
+                        <span class="td-badge">BEST</span>
+                        {% endif %}
+                        {{ row.Model }}
+                    </td>
+                    <td class="td-metric td-auc">{{ row.auc_roc|floatformat:4 }}</td>
+                    <td class="td-metric">{{ row.cv_auc|floatformat:4 }}</td>
+                    <td class="td-metric">{{ row.precision|floatformat:4 }}</td>
+                    <td class="td-metric">{{ row.recall|floatformat:4 }}</td>
+                    <td class="td-metric">{{ row.f1_score|floatformat:4 }}</td>
+                    <td class="td-metric">{{ row.ks_statistic|floatformat:4 }}</td>
+                    <td class="td-metric">{{ row.gini|floatformat:4 }}</td>
+                    <td class="td-metric th-right">{{ row.train_time_seconds|floatformat:1 }}s</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Two Column: AUC Chart + Feature Importance -->
+<div class="dash-two-col">
+
+    <!-- AUC Visual -->
+    <div class="card animate-in">
+        <div class="dash-section-header">
+            <h2 class="dash-section-title">AUC-ROC</h2>
+        </div>
+        <div class="dash-auc-list">
+            {% for row in comparison %}
+            <div class="dash-auc-item">
+                <div class="dash-auc-meta">
+                    <span class="dash-auc-name {% if row.Model == best_model %}dash-auc-name-best{% endif %}">
+                        {{ row.Model }}
+                    </span>
+                    <span class="dash-auc-val {% if row.Model == best_model %}dash-auc-val-best{% endif %}">
+                        {{ row.auc_roc|floatformat:4 }}
+                    </span>
+                </div>
+                <div class="dash-auc-track">
+                    <div class="dash-auc-fill {% if row.Model == best_model %}dash-auc-fill-best{% endif %}"
+                        data-width="{{ row.auc_roc|multiply:100|stringformat:'.1f' }}"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <p class="dash-footnote">Random baseline = 0.50 · Industry good ≥ 0.75</p>
+    </div>
+
+    <!-- Feature Importance -->
+    <div class="card animate-in">
+        <div class="dash-section-header">
+            <h2 class="dash-section-title">Top Risk Drivers</h2>
+            <span class="dash-section-badge">{{ best_model }}</span>
+        </div>
+        <div class="dash-features">
+            {% for feature in top_features %}
+            <div class="dash-feat-row">
+                <span class="dash-feat-rank">{{ forloop.counter }}</span>
+                <span class="dash-feat-name">{{ feature.feature|title|replace:"_, " }}</span>
+                <div class="dash-feat-bar-wrap">
+                    <div class="dash-feat-bar"
+                        data-width="{{ feature.importance_normalized|multiply:100|stringformat:' .1f' }}"></div>
+                </div>
+                <span class="dash-feat-score">{{ feature.importance_normalized|floatformat:3 }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
